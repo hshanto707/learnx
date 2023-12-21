@@ -1,29 +1,27 @@
-export type FullName = {
+export type TFullName = {
   firstName: string,
   lastName: string,
 }
 
-export type Address = {
+export type TAddress = {
   street: string,
   city: string,
   country: string,
 }
 
-export type Order = {
-  productName: string,
-  price: number,
-  quantity: number,
-}
-
-export type User = {
-  userId: number,
+export type TUser = {
   username: string,
-  password: string,
-  fullName: FullName,
-  age: number,
   email: string,
+  password: string,
+  fullName: TFullName,
+  bio: string,
+  dob: string,
+  profileImg: string,
+  gender: 'male' | 'female' | 'other',
+  contactNo: string,
+  address: TAddress,
+  isInstructor: boolean,
   isActive: boolean,
-  hobbies: [string],
-  address: Address,
-  orders: Order[]
+  createdAt: Date,
+  updatedAt: Date,
 }

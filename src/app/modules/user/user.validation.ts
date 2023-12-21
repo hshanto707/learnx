@@ -1,33 +1,76 @@
-import Joi from 'joi';
+import { z } from 'zod'
 
-export const UserValidationSchema = Joi.object({
-  userId: Joi.number().required(),
-  username: Joi.string().required(),
-  password: Joi.string().required(),
-  fullName: Joi.object({
-    firstName: Joi.string().required(),
-    lastName: Joi.string().required(),
-  }).required(),
-  age: Joi.number().required(),
-  email: Joi.string().email().required(),
-  isActive: Joi.boolean().default(true),
-  hobbies: Joi.array().items(Joi.string()).default([]),
-  address: Joi.object({
-    street: Joi.string().required(),
-    city: Joi.string().required(),
-    country: Joi.string().required(),
-  }).required(),
-  orders: Joi.array().items(
-    Joi.object({
-      productName: Joi.string().required(),
-      price: Joi.number().required(),
-      quantity: Joi.number().required(),
+const createUserFullNameValidationSchema = z.object({
+  firstName: z
+    .string()
+    .min(1)
+    .max(20)
+    .refine((value) => /^[A-Z]/.test(value), {
+      message: 'Name must start with a capital letter',
+    }),
+  lastName: z
+    .string()
+    .min(1)
+    .max(20)
+    .refine((value) => /^[A-Z]/.test(value), {
+      message: 'Name must start with a capital letter',
+    }),
+})
+
+const createUserAddressValidationSchema = z.object({
+  string: z.string(),
+  city: z.string(),
+  country: z.string(),
+})
+
+export const createUserValidationSchema = z.object({
+  body: z.object({
+    userName: z.string(),
+    email: z.string().email(),
+    password: z.string(),
+    fullName: createUserFullNameValidationSchema,
+    bio: z.string().optional(),
+    dob: z.string().optional(),
+    profileImg: z.string().optional(),
+    gender: z.string(),
+    contactNo: z.string(),
+    address: createUserAddressValidationSchema.optional(),
+  }),
+})
+
+const updateUserFullNameValidationSchema = z.object({
+  firstName: z
+    .string()
+    .min(1)
+    .max(20)
+    .refine((value) => /^[A-Z]/.test(value), {
+      message: 'Name must start with a capital letter',
     })
-  ).default([]),
-});
+    .optional(),
+  lastName: z
+    .string()
+    .min(1)
+    .max(20)
+    .refine((value) => /^[A-Z]/.test(value), {
+      message: 'Name must start with a capital letter',
+    })
+    .optional(),
+})
 
-export const OrderValidationSchema = Joi.object({
-  productName: Joi.string().required(),
-  price: Joi.number().required(),
-  quantity: Joi.number().required(),
-});
+const updateUserAddressValidationSchema = z.object({
+  string: z.string().optional(),
+  city: z.string().optional(),
+  country: z.string().optional(),
+})
+
+export const updateUserValidationSchema = z.object({
+  body: z.object({
+    fullName: updateUserFullNameValidationSchema,
+    bio: z.string().optional(),
+    dob: z.string().optional(),
+    profileImg: z.string().optional(),
+    gender: z.string().optional(),
+    contactNo: z.string().optional(),
+    address: updateUserAddressValidationSchema.optional(),
+  }),
+})

@@ -13,10 +13,4 @@ router.put('/:userId', UserControllers.updateUser);
 
 router.delete('/:userId', UserControllers.deleteUser);
 
-router.put('/:userId/orders', UserControllers.addOrder);
-
-router.get('/:userId/orders', UserControllers.getOrdersByUser);
-
-router.get('/:userId/orders/total-price', UserControllers.getTotalPrice);
-
 export const UserRoutes = router;

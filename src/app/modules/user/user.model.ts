@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose'
-import { Address, FullName, Order, User } from './user.interface'
+import { TAddress, TFullName, TUser } from './user.interface'
 
-const fullNameSchema = new Schema<FullName>({
+const fullNameSchema = new Schema<TFullName>({
   firstName: {
     type: String,
     required: [true, 'First name is required!'],
@@ -12,7 +12,7 @@ const fullNameSchema = new Schema<FullName>({
   },
 })
 
-const addressSchema = new Schema<Address>({
+const addressSchema = new Schema<TAddress>({
   street: {
     type: String,
     required: [true, 'Street is required!'],
@@ -27,31 +27,16 @@ const addressSchema = new Schema<Address>({
   },
 })
 
-const orderSchema = new Schema<Order>({
-  productName: {
-    type: String,
-    required: [true, 'Product name is required!'],
-  },
-  price: {
-    type: Number,
-    required: [true, 'Product price is required!'],
-  },
-  quantity: {
-    type: Number,
-    required: [true, 'Product quantity is required!'],
-  },
-})
-
-const userSchema = new Schema<User>({
-  userId: {
-    type: Number,
-    unique: true,
-    required: [true, 'UserId is required!'],
-  },
+const userSchema = new Schema<TUser>({
   username: {
     type: String,
     unique: true,
     required: [true, 'Username is required!'],
+  },
+  email: {
+    type: String,
+    unique: true,
+    required: [true, 'Email is required!'],
   },
   password: {
     type: String,
@@ -61,33 +46,51 @@ const userSchema = new Schema<User>({
     type: fullNameSchema,
     required: [true, 'Full name is required!'],
   },
-  age: {
-    type: Number,
-    required: [true, 'Age is required!'],
-  },
-  email: {
+  bio: {
     type: String,
-    unique: true,
-    required: [true, 'Email is required!'],
+    default: null,
   },
-  isActive: {
-    type: Boolean,
-    default: true,
+  dob: {
+    type: String,
+    required: [true, 'Date of birth is required!'],
   },
-  hobbies: {
-    type: [String],
-    default: [],
+  profileImg: {
+    type: String,
+    default: null,
+  },
+  gender: {
+    type: String,
+    enum: {
+      values: ['male', 'female', 'other'],
+    },
+    required: [true, 'Gender is required!'],
+  },
+  contactNo: {
+    type: String,
+    required: [true, 'Date of birth is required!'],
   },
   address: {
     type: addressSchema,
     required: [true, 'Address is required!'],
   },
-  orders: {
-    type: [orderSchema],
-    default: [],
+  isInstructor: {
+    type: Boolean,
+    default: false,
+  },
+  createdAt: {
+    type: Date,
+    default: new Date(),
+  },
+  updatedAt: {
+    type: Date,
+    default: new Date(),
+  },
+  isActive: {
+    type: Boolean,
+    default: true,
   },
 })
 
-const UserModel = mongoose.model<User>('User', userSchema);
+const UserModel = mongoose.model<TUser>('User', userSchema)
 
-export default UserModel;
+export default UserModel
