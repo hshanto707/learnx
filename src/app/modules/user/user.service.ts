@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import httpStatus from 'http-status'
@@ -56,6 +58,8 @@ const updateUser = async (userId: string, payload: Partial<TUser>) => {
   if (address && Object.keys(address).length)
     for (const [key, value] of Object.entries(address))
       modifiedUpdatedData[`address.${key}`] = value
+
+  if (Object.keys(modifiedUpdatedData).length) modifiedUpdatedData.updatedAt = new Date()
 
   const result = await UserModel.findByIdAndUpdate(
     userId,
