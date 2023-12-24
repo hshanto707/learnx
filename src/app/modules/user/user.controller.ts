@@ -1,16 +1,67 @@
-import { Request, Response } from 'express';
-import { UserServices } from './user.service';
-import bcrypt from 'bcrypt';
+import { UserServices } from './user.service'
+import { catchAsync } from '../../utils/catchAsync'
+import { ResponseComposer } from '../../utils/ResponseComposer'
+import httpStatus from 'http-status'
 
-const getUsers = async (req: Request, res: Response) => {};
+const getUsers = catchAsync(async (req, res) => {
+  const result = await UserServices.getUsers()
 
-const getUserById = async (req: Request, res: Response) => {};
+  ResponseComposer(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'Users retrieved successfully!',
+    data: result.data,
+  })
+})
 
-const createUser = async (req: Request, res: Response) => {};
+const getUserById = catchAsync(async (req, res) => {
+  const { userId } = req.params
 
-const updateUser = async (req: Request, res: Response) => {};
+  const result = await UserServices.getUserById(userId)
 
-const deleteUser = async (req: Request, res: Response) => {};
+  ResponseComposer(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User retrieved successfully!',
+    data: result.data,
+  })
+})
+
+const createUser = catchAsync(async (req, res) => {
+  const result = await UserServices.createUser(req.body)
+
+  ResponseComposer(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User created successfully!',
+    data: result.data,
+  })
+})
+
+const updateUser = catchAsync(async (req, res) => {
+  const { userId } = req.params
+  const result = await UserServices.updateUser(userId, req.body)
+
+  ResponseComposer(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User updated successfully!',
+  data: result
+  })
+})
+
+const deleteUser = catchAsync(async (req, res) => {
+  const { userId } = req.params
+
+  const result = await UserServices.deleteUser(userId)
+
+  ResponseComposer(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: 'User deleted successfully!',
+    data: result,
+  })
+})
 
 export const UserControllers = {
   getUsers,
@@ -18,4 +69,4 @@ export const UserControllers = {
   createUser,
   updateUser,
   deleteUser,
-};
+}
